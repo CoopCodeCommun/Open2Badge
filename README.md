@@ -1,103 +1,103 @@
 # OpenBadge 🏆
 
-OpenBadge est une plateforme Django moderne pour la création, l'émission et la gestion de badges numériques conformes aux standards OpenBadges v2 et v3. Elle permet aux organisations de créer et de délivrer des badges numériques vérifiables qui attestent des compétences, des réalisations et des certifications.
+OpenBadge is a modern Django platform for creating, issuing, and managing digital badges compliant with OpenBadges v2 and v3 standards. It enables organizations to create and deliver verifiable digital badges that certify skills, achievements, and certifications.
 
-[🇬🇧 English version](README.en.md)
+[🇫🇷 Version française](README.fr.md)
 
-## ✨ Fonctionnalités
+## ✨ Features
 
-- 🎯 Support complet des standards OpenBadges v2 et v3
-- 🔒 Émission de badges numériques vérifiables et sécurisés
-- 🎨 Interface utilisateur moderne et intuitive
-- 🔄 API REST complète avec documentation OpenAPI
-- 📱 Design responsive pour une utilisation sur tous les appareils
-- 🌐 Support multilingue (i18n)
-- 🔍 Alignement avec les référentiels de compétences
-- 📊 Tableaux de bord pour le suivi des badges émis
+- 🎯 Full support for OpenBadges v2 and v3 standards
+- 🔒 Issue secure and verifiable digital badges
+- 🎨 Modern and intuitive user interface
+- 🔄 Complete REST API with OpenAPI documentation
+- 📱 Responsive design for all devices
+- 🌐 Multilingual support (i18n)
+- 🔍 Alignment with competency frameworks
+- 📊 Dashboards for issued badges tracking
 
-## 🚀 Installation
+## 🚀 Getting Started
 
-1. Clonez le dépôt :
+1. Clone the repository:
 ```bash
-git clone https://github.com/votre-username/openbadge.git
+git clone https://github.com/your-username/openbadge.git
 cd openbadge
 ```
 
-2. Installez les dépendances avec Poetry :
+2. Install dependencies with Poetry:
 ```bash
 poetry install
 ```
 
-3. Configurez les variables d'environnement :
+3. Configure environment variables:
 ```bash
 cp .env.example .env
-# Éditez .env avec vos paramètres
+# Edit .env with your settings
 ```
 
-4. Appliquez les migrations :
+4. Apply migrations:
 ```bash
 poetry run python manage.py migrate
 ```
 
-5. Créez un superutilisateur :
+5. Create a superuser:
 ```bash
 poetry run python manage.py createsuperuser
 ```
 
-6. Lancez le serveur de développement :
+6. Run the development server:
 ```bash
 poetry run python manage.py runserver
 ```
 
-## 🧪 Tests
+## 🧪 Testing
 
-Le projet utilise pytest et coverage.py pour les tests. Pour exécuter la suite de tests :
+The project uses pytest and coverage.py for testing. To run the test suite:
 
 ```bash
-# Exécuter les tests
+# Run tests
 poetry run python manage.py test
 
-# Exécuter les tests avec couverture
+# Run tests with coverage
 poetry run coverage run manage.py test
 poetry run coverage report
 ```
 
 ## 📖 Documentation
 
-La documentation complète est disponible dans le dossier `docs/` et inclut :
+Complete documentation is available in the `docs/` folder and includes:
 
-- Guide de démarrage rapide
-- Documentation de l'API
-- Guide de contribution
-- Spécifications techniques
+- Quick Start Guide
+- API Documentation
+- Contribution Guide
+- Technical Specifications
 
-## 🤝 Contribution
+## 🤝 Contributing
 
-Les contributions sont les bienvenues ! Pour contribuer :
+Contributions are welcome! To contribute:
 
-1. Forkez le projet
-2. Créez une branche pour votre fonctionnalité (`git checkout -b feature/ma-fonctionnalite`)
-3. Committez vos changements (`git commit -am 'Ajout de ma fonctionnalité'`)
-4. Poussez vers la branche (`git push origin feature/ma-fonctionnalite`)
-5. Ouvrez une Pull Request
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -am 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## 📄 Licence
+## 📄 License
 
-Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Remerciements
+## 🙏 Acknowledgments
 
-- [Django](https://www.djangoproject.com/) - Le framework web utilisé
-- [Django REST framework](https://www.django-rest-framework.org/) - Pour l'API REST
-- [Poetry](https://python-poetry.org/) - Pour la gestion des dépendances
-- [OpenBadges](https://openbadges.org/) - Pour les spécifications des badges numériques
+- [Django](https://www.djangoproject.com/) - The web framework used
+- [Django REST framework](https://www.django-rest-framework.org/) - For the REST API
+- [Poetry](https://python-poetry.org/) - For dependency management
+- [OpenBadges](https://openbadges.org/) - For digital badges specifications
 
 ## 📞 Contact
 
-- Site web : [https://votre-site.com](https://votre-site.com)
-- Email : contact@votre-site.com
-- Twitter : [@votre-compte](https://twitter.com/votre-compte)
+- Website: [https://your-website.com](https://your-website.com)
+- Email: contact@your-website.com
+- Twitter: [@your-handle](https://twitter.com/your-handle)
 
 ---
 
-Fait avec ❤️ par [Votre Nom/Organisation]
+Made with ❤️ by [Your Name/Organization]
