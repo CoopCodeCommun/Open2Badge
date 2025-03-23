@@ -1,0 +1,73 @@
+{% load i18n %}
+
+{% if is_edit %}
+<form hx-post="{% url 'core:update_endorsement' endorsement.id %}" hx-swap="none" class="needs-validation" novalidate>
+{% else %}
+<form hx-post="{% url 'core:create_endorsement' %}" 
+      hx-swap="none" 
+      hx-indicator=".htmx-indicator"
+      class="needs-validation" novalidate>
+{% endif %}
+  {% csrf_token %}
+  
+  <!-- Champs cachés pour les paramètres -->
+  {% if badge_class %}
+  <input type="hidden" name="badge_class_id" value="{{ badge_class.id }}">
+  {% endif %}
+  
+  {% if issuer %}
+  <input type="hidden" name="issuer_id" value="{{ issuer.id }}">
+  {% endif %}
+  
+  {% if assertion %}
+  <input type="hidden" name="assertion_id" value="{{ assertion.id }}">
+  {% endif %}
+  
+  {% if form.non_field_errors %}
+  <div class="alert alert-danger">
+    {% for error in form.non_field_errors %}
+    <p>{{ error }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+  
+  {% if form.type.errors %}
+  <div class="alert alert-danger">
+    {% for error in form.type.errors %}
+    <p>{{ error }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+  
+  {{ form.type }}
+  
+  <div class="mb-3">
+    <label for="{{ form.claim_text.id_for_label }}" class="form-label">
+      {{ form.claim_text.label }}
+      {% if form.claim_text.field.required %}<span class="text-danger">*</span>{% endif %}
+    </label>
+    {{ form.claim_text }}
+    {% if form.claim_text.errors %}
+    <div class="invalid-feedback d-block">
+      {% for error in form.claim_text.errors %}
+      {{ error }}
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% if form.claim_text.help_text %}
+    <div class="form-text">{{ form.claim_text.help_text }}</div>
+    {% endif %}
+  </div>
+  
+  <div class="d-flex justify-content-end">
+    <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">{% trans "Annuler" %}</button>
+    <button type="submit" class="btn btn-primary">
+      <span class="htmx-indicator spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+      {% if is_edit %}
+        {% trans "Mettre à jour" %}
+      {% else %}
+        {% trans "Endorser" %}
+      {% endif %}
+    </button>
+  </div>
+</form>

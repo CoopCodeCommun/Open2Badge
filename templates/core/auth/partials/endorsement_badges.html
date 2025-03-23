@@ -1,0 +1,83 @@
+{% load i18n %}
+{% load dict_filters %}
+
+<div hx-get="{% url 'core:profile-endorsement-badges' %}" 
+     hx-trigger="refreshBadges from:body" 
+     hx-target="#endorsement-badges-list">
+
+{% if badges %}
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for badge in badges %}
+            <div class="col">
+                <div class="card h-100">
+                    {% if badge.image %}
+                        <img src="{{ badge.image.url }}" class="card-img-top" alt="{{ badge.name }}">
+                    {% else %}
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 150px;">
+                            <i class="bi bi-award fs-1"></i>
+                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ badge.name }}</h5>
+                        <p class="card-text small">{{ badge.description|truncatechars:100 }}</p>
+                        <p class="card-text"><small class="text-muted">{% trans "Émetteur" %}: {{ badge.issuer.name }}</small></p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-grid gap-2">
+                            {% if user_endorsed_badges|get_item:badge.id %}
+                                <button class="btn btn-sm btn-success" disabled>
+                                    <i class="bi bi-check-circle"></i> {% trans "Endorsé !" %}
+                                </button>
+                            {% else %}
+                                <button class="btn btn-sm btn-outline-primary"
+                                        hx-get="{% url 'core:endorsement_modal' %}?badge_class_id={{ badge.id }}"
+                                        hx-target="#modals-container">
+                                    <i class="bi bi-award"></i> {% trans "Endorser en mon nom" %}
+                                </button>
+                            {% endif %}
+                            
+                            {% if user_issuers %}
+                                {% if issuer_endorsed_badges|get_item:badge.id|dict_values_all %}
+                                    <button class="btn btn-sm btn-success mt-1" disabled>
+                                        <i class="bi bi-check-circle"></i> {% trans "Endorsé par tous vos émetteurs !" %}
+                                    </button>
+                                {% else %}
+                                    <div class="dropdown mt-1">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle w-100" type="button" 
+                                                id="endorseAs{{ badge.id }}" data-bs-toggle="dropdown" 
+                                                aria-expanded="false">
+                                            {% trans "Endorser en tant que..." %}
+                                        </button>
+                                        <ul class="dropdown-menu w-100" aria-labelledby="endorseAs{{ badge.id }}">
+                                            {% for issuer in user_issuers %}
+                                                <li>
+                                                    {% if issuer_endorsed_badges|get_item:badge.id|get_item:issuer.id %}
+                                                        <button class="dropdown-item disabled">
+                                                            <i class="bi bi-check-circle text-success"></i> {{ issuer.name }} ({% trans "Endorsé" %})
+                                                        </button>
+                                                    {% else %}
+                                                        <button class="dropdown-item"
+                                                                hx-get="{% url 'core:endorsement_modal' %}?badge_class_id={{ badge.id }}&issuer_id={{ issuer.id }}"
+                                                                hx-target="#modals-container">
+                                                            {{ issuer.name }}
+                                                        </button>
+                                                    {% endif %}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        {% trans "Aucun badge disponible à endorser pour le moment." %}
+    </div>
+{% endif %}
+
+</div>

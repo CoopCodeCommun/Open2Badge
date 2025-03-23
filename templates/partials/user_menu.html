@@ -1,0 +1,41 @@
+{% load i18n %}
+
+{% if user.is_authenticated %}
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+            {{ user.get_display_name }}
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+                <a class="dropdown-item" href="{% url 'core:profile' %}">
+                    <i class="bi bi-person"></i> {% trans "Mon profil" %}
+                </a>
+            </li>
+            {% if user.is_staff %}
+                <li>
+                    <a class="dropdown-item" href="{% url 'admin:index' %}">
+                        <i class="bi bi-shield-lock"></i> {% trans "Administration" %}
+                    </a>
+                </li>
+            {% endif %}
+            <li><hr class="dropdown-divider"></li>
+            <li>
+                <a class="dropdown-item" href="#" 
+                   hx-post="{% url 'core:logout' %}" 
+                   hx-target="#user-menu"
+                   hx-swap="outerHTML"
+                   hx-confirm="{% trans 'Voulez-vous vraiment vous déconnecter ?' %}">
+                    <i class="bi bi-box-arrow-right"></i> {% trans "Déconnexion" %}
+                </a>
+            </li>
+        </ul>
+    </li>
+{% else %}
+    <li class="nav-item">
+        <a class="nav-link" href="#"
+           data-bs-toggle="modal"
+           data-bs-target="#loginModal">
+            <i class="bi bi-box-arrow-in-right"></i> {% trans "Se connecter" %}
+        </a>
+    </li>
+{% endif %}

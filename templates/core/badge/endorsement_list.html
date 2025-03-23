@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load string_filters %}
+
+{% block title %}{% trans "Endorser des badges" %}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="h2">{% trans "Endorser des badges" %}</h1>
+            <p class="text-muted">
+                {% trans "En tant qu'administrateur de lieu, vous pouvez endorser des badges pour valider leur qualité et pertinence." %}
+            </p>
+        </div>
+    </div>
+
+    <!-- Liste des badges par émetteur -->
+    {% for issuer in issuers %}
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-light">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="h5 mb-0">{{ issuer.name }}</h2>
+                <span class="badge bg-{{ issuer.version|default:'v2'|slugify }}-subtle text-{{ issuer.version|default:'v2'|slugify }}">
+                    {{ issuer.get_version_display|default:'v2' }}
+                </span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {% for badge in issuer.badge_classes.all %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span class="badge bg-{{ badge.version|default:'v2'|slugify }}-subtle text-{{ badge.version|default:'v2'|slugify }}">
+                                {{ badge.get_version_display|default:'v2' }}
+                            </span>
+                            {% if badge.level %}
+                            <span class="badge bg-warning">{{ badge.level }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="card-body">
+                            <div class="text-center mb-3">
+                                <img src="{{ badge.image.url }}" alt="{{ badge.name }}" class="img-fluid" style="max-height: 100px;">
+                            </div>
+                            <h5 class="card-title">{{ badge.name }}</h5>
+                            <p class="card-text small text-muted">{{ badge.description|truncatechars:100 }}</p>
+                            
+                            {% if badge.skills %}
+                            <div class="mt-3">
+                                <p class="small mb-1"><strong>{% trans "Compétences validées" %}:</strong></p>
+                                <div>
+                                    {% for skill in badge.skills|split:"," %}
+                                    <span class="badge bg-light text-dark me-1 mb-1">{{ skill|trim }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex justify-content-between align-items-center">
+                                {% if user.is_authenticated and is_place_admin %}
+                                <button type="button" class="btn btn-sm btn-primary w-100"
+                                        hx-get="{% url 'core:endorsement_modal' %}?badge_class_id={{ badge.id }}"
+                                        hx-target="#endorsementModal .modal-content"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#endorsementModal">
+                                    <i class="fas fa-thumbs-up me-1"></i> {% trans "Endorser" %}
+                                </button>
+                                {% else %}
+                                <a href="{{ badge.criteria_url }}" target="_blank" class="btn btn-sm btn-outline-primary w-100">
+                                    <i class="fas fa-info-circle me-1"></i> {% trans "Critères" %}
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        {% trans "Cet émetteur n'a pas encore créé de badges." %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="alert alert-info">
+        {% trans "Aucun émetteur de badges n'est disponible pour le moment." %}
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Modal pour l'endorsement -->
+<div class="modal fade" id="endorsementModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Le contenu sera chargé dynamiquement via HTMX -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Rafraîchir la liste après un endorsement réussi
+        document.body.addEventListener('htmx:afterRequest', function(evt) {
+            if (evt.detail.xhr.status === 286) {
+                // Fermer le modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('endorsementModal'));
+                if (modal) {
+                    modal.hide();
+                }
+                
+                // Afficher un message de succès
+                const alertContainer = document.createElement('div');
+                alertContainer.className = 'alert alert-success alert-dismissible fade show';
+                alertContainer.setAttribute('role', 'alert');
+                alertContainer.innerHTML = `
+                    <i class="fas fa-check-circle me-2"></i>
+                    {% trans "Votre endorsement a été enregistré avec succès." %}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                `;
+                
+                document.querySelector('.container').prepend(alertContainer);
+                
+                // Supprimer l'alerte après 5 secondes
+                setTimeout(function() {
+                    alertContainer.remove();
+                }, 5000);
+            }
+        });
+        
+        // Nettoyer le modal quand il est fermé
+        document.getElementById('endorsementModal').addEventListener('hidden.bs.modal', function() {
+            this.querySelector('.modal-content').innerHTML = '';
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,204 @@
+[
+  {
+    "model": "core.issuer",
+    "pk": 2,
+    "fields": {
+      "name": "École du Numérique",
+      "description": "École spécialisée dans les formations aux métiers du numérique et du développement web.",
+      "image": "/media/404/img_badge_404.png",
+      "created_at": "2025-03-22T10:00:00Z",
+      "updated_at": "2025-03-22T10:00:00Z",
+      "url": "https://ecole-numerique.fr",
+      "email": "contact@ecole-numerique.fr",
+      "owner": 2,
+      "version": "v3",
+      "public_key": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvXd4Zn1UYQpPf7PM3C\n-----END PUBLIC KEY-----",
+      "key_type": "rsa",
+      "privacy_policy": "https://ecole-numerique.fr/privacy"
+    }
+  },
+  {
+    "model": "core.issuer",
+    "pk": 3,
+    "fields": {
+      "name": "Institut de Cybersécurité",
+      "description": "Institut spécialisé dans la formation et la certification en cybersécurité.",
+      "image": "/media/404/img_badge_404.png",
+      "created_at": "2025-03-22T11:30:00Z",
+      "updated_at": "2025-03-22T11:30:00Z",
+      "url": "https://institut-cybersecurite.fr",
+      "email": "contact@institut-cybersecurite.fr",
+      "owner": 4,
+      "version": "v3",
+      "public_key": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvXd4Zn1UYQpPf7PM3C\n-----END PUBLIC KEY-----",
+      "key_type": "rsa",
+      "privacy_policy": "https://institut-cybersecurite.fr/privacy"
+    }
+  },
+  {
+    "model": "core.issuer",
+    "pk": 4,
+    "fields": {
+      "name": "Centre d'IA et Data Science",
+      "description": "Centre de formation spécialisé dans l'intelligence artificielle et la science des données.",
+      "image": "/media/404/img_badge_404.png",
+      "created_at": "2025-03-22T14:15:00Z",
+      "updated_at": "2025-03-22T14:15:00Z",
+      "url": "https://centre-ia-data.fr",
+      "email": "contact@centre-ia-data.fr",
+      "owner": 8,
+      "version": "v3",
+      "public_key": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvXd4Zn1UYQpPf7PM3C\n-----END PUBLIC KEY-----",
+      "key_type": "rsa",
+      "privacy_policy": "https://centre-ia-data.fr/privacy"
+    }
+  },
+  {
+    "model": "core.issuer_members",
+    "pk": 1,
+    "fields": {
+      "issuer": 1,
+      "user": 3
+    }
+  },
+  {
+    "model": "core.issuer_members",
+    "pk": 2,
+    "fields": {
+      "issuer": 1,
+      "user": 5
+    }
+  },
+  {
+    "model": "core.issuer_members",
+    "pk": 3,
+    "fields": {
+      "issuer": 1,
+      "user": 7
+    }
+  },
+  {
+    "model": "core.issuer_members",
+    "pk": 4,
+    "fields": {
+      "issuer": 2,
+      "user": 6
+    }
+  },
+  {
+    "model": "core.issuer_members",
+    "pk": 5,
+    "fields": {
+      "issuer": 2,
+      "user": 9
+    }
+  },
+  {
+    "model": "core.issuer_members",
+    "pk": 6,
+    "fields": {
+      "issuer": 2,
+      "user": 10
+    }
+  },
+  {
+    "model": "core.issuer_members",
+    "pk": 7,
+    "fields": {
+      "issuer": 3,
+      "user": 11
+    }
+  },
+  {
+    "model": "core.issuer_members",
+    "pk": 8,
+    "fields": {
+      "issuer": 3,
+      "user": 3
+    }
+  },
+  {
+    "model": "core.issuer_members",
+    "pk": 9,
+    "fields": {
+      "issuer": 4,
+      "user": 7
+    }
+  },
+  {
+    "model": "core.issuer_members",
+    "pk": 10,
+    "fields": {
+      "issuer": 4,
+      "user": 10
+    }
+  },
+  {
+    "model": "core.issuer",
+    "pk": 5,
+    "fields": {
+      "name": "OpenBadge Academy",
+      "description": "Académie de formation spécialisée dans les badges numériques et les certifications open source.",
+      "image": "/media/404/img_badge_404.png",
+      "created_at": "2025-03-23T08:00:00Z",
+      "updated_at": "2025-03-23T08:00:00Z",
+      "url": "https://openbadge-academy.fr",
+      "email": "contact@openbadge-academy.fr",
+      "owner": 12,
+      "version": "v3",
+      "public_key": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvXd4Zn1UYQpPf7PM3C\n-----END PUBLIC KEY-----",
+      "key_type": "rsa",
+      "privacy_policy": "https://openbadge-academy.fr/privacy"
+    }
+  },
+  {
+    "model": "core.issuer",
+    "pk": 6,
+    "fields": {
+      "name": "Digital Skills Institute",
+      "description": "Institut de compétences numériques proposant des formations et certifications dans divers domaines IT.",
+      "image": "/media/404/img_badge_404.png",
+      "created_at": "2025-03-23T09:30:00Z",
+      "updated_at": "2025-03-23T09:30:00Z",
+      "url": "https://digital-skills-institute.org",
+      "email": "contact@digital-skills-institute.org",
+      "owner": 12,
+      "version": "v3",
+      "public_key": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvXd4Zn1UYQpPf7PM3C\n-----END PUBLIC KEY-----",
+      "key_type": "rsa",
+      "privacy_policy": "https://digital-skills-institute.org/privacy"
+    }
+  },
+  {
+    "model": "core.issuer_members",
+    "pk": 11,
+    "fields": {
+      "issuer": 5,
+      "user": 3
+    }
+  },
+  {
+    "model": "core.issuer_members",
+    "pk": 12,
+    "fields": {
+      "issuer": 5,
+      "user": 6
+    }
+  },
+  {
+    "model": "core.issuer_members",
+    "pk": 13,
+    "fields": {
+      "issuer": 6,
+      "user": 8
+    }
+  },
+  {
+    "model": "core.issuer_members",
+    "pk": 14,
+    "fields": {
+      "issuer": 6,
+      "user": 11
+    }
+  }
+]

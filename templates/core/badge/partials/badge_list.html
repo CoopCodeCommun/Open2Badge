@@ -1,0 +1,70 @@
+{% if badges %}
+    {% for badge in badges %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span class="badge bg-{{ badge.version|default:'v2'|slugify }}-subtle text-{{ badge.version|default:'v2'|slugify }}">
+                    {{ badge.get_version_display|default:'v2' }}
+                </span>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'core:badge-detail' badge.id %}">
+                                <i class="fas fa-eye me-2"></i>Détails
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#"
+                               hx-get="{% url 'core:badge-edit-modal' badge.id %}" 
+                               hx-target="#badgeModal .modal-content"
+                               data-bs-toggle="modal" 
+                               data-bs-target="#badgeModal">
+                                <i class="fas fa-edit me-2"></i>Modifier
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-3">
+                    <img src="{{ badge.image }}" alt="{{ badge.name }}" class="img-fluid" style="max-height: 100px;">
+                </div>
+                <h5 class="card-title">{{ badge.name }}</h5>
+                <p class="card-text small text-muted">{{ badge.description|truncatechars:100 }}</p>
+            </div>
+            <div class="card-footer bg-transparent">
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">Émetteur: {{ badge.issuer.name }}</small>
+                    {% if badge.category %}
+                    <span class="badge bg-info">{{ badge.category }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="col-12 text-center py-5">
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>Aucun badge n'a été créé pour le moment.
+            <br>
+            <button type="button" class="btn btn-sm btn-primary mt-3" 
+                    hx-get="{% url 'core:badge-create-modal' %}" 
+                    hx-target="#badgeModal .modal-content"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#badgeModal">
+                <i class="fas fa-plus-circle me-2"></i>Créer un badge
+            </button>
+        </div>
+    </div>
+{% endif %}
+
+<!-- Script pour gérer le rafraîchissement HTMX -->
+<script>
+    document.body.addEventListener('refresh', function() {
+        htmx.ajax('GET', '{% url "core:badge-list" %}', {target: '#badge-list', swap: 'innerHTML'});
+    });
+</script>

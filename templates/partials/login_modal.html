@@ -1,0 +1,33 @@
+{% load i18n %}
+
+<div class="modal fade" id="loginModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{% trans "Se connecter" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form hx-post="{% url 'core:login' %}" 
+                      hx-target="#loginModal .modal-body"
+                      hx-swap="innerHTML">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">{% trans "Adresse email" %}</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                        <div class="form-text">
+                            {% trans "Un compte sera créé automatiquement si vous n'en avez pas." %}
+                        </div>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            {% trans "Continuer" %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

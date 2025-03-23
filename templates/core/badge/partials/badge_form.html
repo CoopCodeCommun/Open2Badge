@@ -1,0 +1,196 @@
+{% load static %}
+
+<div class="modal-header">
+    <h5 class="modal-title">{% if is_edit %}Modifier{% else %}Créer{% endif %} un badge</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+</div>
+
+<div class="modal-body">
+    <!-- Introduction simple et claire -->
+    <div class="alert alert-info mb-3">
+        <i class="fas fa-info-circle me-2"></i>
+        <strong>Qu'est-ce qu'un badge ?</strong> Un badge est une récompense numérique qui reconnaît une compétence ou un accomplissement.
+    </div>
+    
+    <form id="badgeForm" 
+          {% if is_edit %}
+          hx-post="{% url 'core:badge-update' badge.id %}"
+          {% else %}
+          hx-post="{% url 'core:badge-create' %}"
+          {% endif %}
+          hx-encoding="multipart/form-data"
+          hx-swap="none">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+            {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <!-- Champs principaux avec explications simples -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label fw-bold" for="{{ form.name.id_for_label }}">Nom du badge*</label>
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                    <div class="invalid-feedback d-block">{{ form.name.errors.0 }}</div>
+                    {% endif %}
+                    <div class="form-text mt-2">
+                        <i class="fas fa-lightbulb text-warning"></i> 
+                        Exemple : "Badge Python Débutant", "Maîtrise de HTML"
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label fw-bold" for="{{ form.issuer.id_for_label }}">Émetteur*</label>
+                    {{ form.issuer }}
+                    {% if form.issuer.errors %}
+                    <div class="invalid-feedback d-block">{{ form.issuer.errors.0 }}</div>
+                    {% endif %}
+                    <div class="form-text mt-2">
+                        <i class="fas fa-info-circle text-info"></i>
+                        L'organisation qui délivre ce badge
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label fw-bold" for="{{ form.description.id_for_label }}">Description*</label>
+            {{ form.description }}
+            {% if form.description.errors %}
+            <div class="invalid-feedback d-block">{{ form.description.errors.0 }}</div>
+            {% endif %}
+            <div class="form-text mt-2">
+                <i class="fas fa-edit text-primary"></i>
+                Expliquez clairement :
+                <ul class="mt-1 mb-0">
+                    <li>Ce que représente ce badge</li>
+                    <li>Comment l'obtenir</li>
+                    <li>Pourquoi il est important</li>
+                </ul>
+                <span class="text-muted fst-italic">Utilisez un langage simple et direct</span>
+            </div>
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label fw-bold" for="{{ form.image.id_for_label }}">Image du badge*</label>
+                    {{ form.image }}
+                    {% if form.image.errors %}
+                    <div class="invalid-feedback d-block">{{ form.image.errors.0 }}</div>
+                    {% endif %}
+                    <div class="form-text mt-2">
+                        <i class="fas fa-image text-success"></i>
+                        Choisissez une image qui représente bien la compétence
+                        <br>
+                        <span class="text-muted">Format recommandé : PNG, 400x400 pixels</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label fw-bold" for="{{ form.criteria_url.id_for_label }}">Lien vers les critères*</label>
+                    {{ form.criteria_url }}
+                    {% if form.criteria_url.errors %}
+                    <div class="invalid-feedback d-block">{{ form.criteria_url.errors.0 }}</div>
+                    {% endif %}
+                    <div class="form-text mt-2">
+                        <i class="fas fa-link text-info"></i>
+                        Adresse web qui explique comment obtenir ce badge
+                        <br>
+                        <span class="text-muted">Exemple : https://monsite.fr/criteres-badge-python</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Informations complémentaires avec exemples -->
+        <div class="card mb-3 border-light">
+            <div class="card-header bg-light">
+                <i class="fas fa-sliders-h me-2"></i> Informations complémentaires
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold" for="{{ form.category.id_for_label }}">Catégorie</label>
+                            {{ form.category }}
+                            {% if form.category.errors %}
+                            <div class="invalid-feedback d-block">{{ form.category.errors.0 }}</div>
+                            {% endif %}
+                            <div class="form-text mt-2">
+                                <span class="text-muted">Exemples : Programmation, Web, Design</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold" for="{{ form.level.id_for_label }}">Niveau</label>
+                            {{ form.level }}
+                            {% if form.level.errors %}
+                            <div class="invalid-feedback d-block">{{ form.level.errors.0 }}</div>
+                            {% endif %}
+                            <div class="form-text mt-2">
+                                <span class="text-muted">Exemples : Débutant, Intermédiaire, Expert</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold" for="{{ form.version.id_for_label }}">Version</label>
+                            {{ form.version }}
+                            {% if form.version.errors %}
+                            <div class="invalid-feedback d-block">{{ form.version.errors.0 }}</div>
+                            {% endif %}
+                            <div class="form-text mt-2">
+                                <span class="text-muted">Format du badge (v2 ou v3)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label fw-bold" for="{{ form.skills.id_for_label }}">Compétences</label>
+            {{ form.skills }}
+            {% if form.skills.errors %}
+            <div class="invalid-feedback d-block">{{ form.skills.errors.0 }}</div>
+            {% endif %}
+            <div class="form-text mt-2">
+                <i class="fas fa-tags text-primary"></i>
+                Listez les compétences que ce badge valide, séparées par des virgules
+                <div class="mt-1 p-2 bg-light rounded">
+                    <span class="badge bg-secondary me-1">Python</span>
+                    <span class="badge bg-secondary me-1">Programmation</span>
+                    <span class="badge bg-secondary">Algorithmique</span>
+                    <span class="text-muted ms-2">← Exemple</span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <!-- Légende des champs obligatoires -->
+    <div class="text-muted me-auto">
+        <small><span class="text-danger">*</span> Champs obligatoires</small>
+    </div>
+    
+    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+        <i class="fas fa-times me-1"></i>Annuler
+    </button>
+    <button type="submit" class="btn btn-primary" form="badgeForm">
+        <i class="fas fa-{% if is_edit %}save{% else %}plus-circle{% endif %} me-1"></i>
+        {% if is_edit %}Mettre à jour{% else %}Créer ce badge{% endif %}
+    </button>
+</div>
+
+<!-- Suppression de l'initialisation des form-outline qui causait des problèmes de superposition -->

@@ -1,0 +1,208 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <!-- Modal header -->
+        <div class="modal-header">
+            <h5 class="modal-title">Créer un nouvel émetteur</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <!-- Introduction simple et claire -->
+            <div class="alert alert-info mb-3">
+                <i class="bi bi-info-circle me-2"></i>
+                <strong>Qu'est-ce qu'un émetteur ?</strong> Un émetteur est une organisation qui crée et délivre des badges numériques. 
+                <span class="d-block mt-1">Par exemple : une université, une entreprise ou une association.</span>
+            </div>
+            
+            <form id="issuerForm" hx-post="{% url 'core:issuer-create' %}"
+                hx-encoding="multipart/form-data"
+                hx-swap="none"
+                hx-target="#issuerList"
+                hx-trigger="submit">
+                {% csrf_token %}
+                
+                <!-- Champs de base -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="{{ form.name.id_for_label }}" class="form-label fw-bold">
+                                {{ form.name.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.name }}
+                            <div class="form-text">
+                                <i class="bi bi-building text-primary me-1"></i>
+                                Nom de votre organisation ou institution
+                            </div>
+                            {% if form.name.errors %}
+                            <div class="invalid-feedback d-block">{{ form.name.errors|join:", " }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="{{ form.email.id_for_label }}" class="form-label fw-bold">
+                                {{ form.email.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.email }}
+                            <div class="form-text">
+                                <i class="bi bi-envelope text-info me-1"></i>
+                                Email de contact pour les questions sur les badges
+                            </div>
+                            {% if form.email.errors %}
+                            <div class="invalid-feedback d-block">{{ form.email.errors|join:", " }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="{{ form.url.id_for_label }}" class="form-label fw-bold">
+                                {{ form.url.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.url }}
+                            <div class="form-text">
+                                <i class="bi bi-globe text-success me-1"></i>
+                                Adresse web de votre organisation
+                            </div>
+                            {% if form.url.errors %}
+                            <div class="invalid-feedback d-block">{{ form.url.errors|join:", " }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="{{ form.image.id_for_label }}" class="form-label fw-bold">
+                                {{ form.image.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.image }}
+                            <div class="form-text">
+                                <i class="bi bi-image text-danger me-1"></i>
+                                URL du logo de votre organisation
+                            </div>
+                            {% if form.image.errors %}
+                            <div class="invalid-feedback d-block">{{ form.image.errors|join:", " }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="{{ form.description.id_for_label }}" class="form-label fw-bold">
+                        {{ form.description.label }}
+                    </label>
+                    {{ form.description }}
+                    <div class="form-text">
+                        <i class="bi bi-text-left text-warning me-1"></i>
+                        Présentez votre organisation en quelques phrases simples
+                    </div>
+                    {% if form.description.errors %}
+                    <div class="invalid-feedback d-block">{{ form.description.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+                
+                <!-- Bouton pour afficher/masquer les champs avancés -->
+                <div class="d-grid mb-3">
+                    <button class="btn btn-outline-secondary btn-sm" type="button" 
+                            data-bs-toggle="collapse" data-bs-target="#advancedFields" 
+                            aria-expanded="false" aria-controls="advancedFields">
+                        <i class="bi bi-gear me-1"></i> Paramètres avancés
+                    </button>
+                </div>
+                
+                <!-- Champs avancés (masqués par défaut) -->
+                <div class="collapse" id="advancedFields">
+                    <div class="card card-body bg-light mb-3">
+                        <h6 class="card-subtitle mb-3 text-muted">Paramètres optionnels pour utilisateurs avancés</h6>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.privacy_policy.id_for_label }}" class="form-label fw-bold">
+                                {{ form.privacy_policy.label }}
+                            </label>
+                            {{ form.privacy_policy }}
+                            <div class="form-text">
+                                <i class="bi bi-shield text-primary me-1"></i>
+                                Lien vers votre politique de confidentialité
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label for="{{ form.public_key.id_for_label }}" class="form-label fw-bold">
+                                        {{ form.public_key.label }}
+                                    </label>
+                                    {{ form.public_key }}
+                                    <div class="form-text">
+                                        <i class="bi bi-key text-secondary me-1"></i>
+                                        Clé publique pour signer vos badges
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.key_type.id_for_label }}" class="form-label fw-bold">
+                                        {{ form.key_type.label }}
+                                    </label>
+                                    {{ form.key_type }}
+                                    <div class="form-text">
+                                        <i class="bi bi-lock text-muted me-1"></i>
+                                        Type de clé utilisée
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.verification.id_for_label }}" class="form-label fw-bold">
+                                        {{ form.verification.label }}
+                                    </label>
+                                    {{ form.verification }}
+                                    <div class="form-text">
+                                        <i class="bi bi-check-circle text-success me-1"></i>
+                                        Méthode de vérification des badges
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.revocation_list.id_for_label }}" class="form-label fw-bold">
+                                        {{ form.revocation_list.label }}
+                                    </label>
+                                    {{ form.revocation_list }}
+                                    <div class="form-text">
+                                        <i class="bi bi-x-circle text-danger me-1"></i>
+                                        URL de la liste des badges révoqués
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Légende des champs obligatoires -->
+                <div class="text-muted mb-3">
+                    <small><i class="bi bi-asterisk text-danger"></i> Champs obligatoires</small>
+                </div>
+                
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x me-1"></i>Annuler
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="spinner-border spinner-border-sm me-2 d-none" role="status" aria-hidden="true"></span>
+                        <i class="bi bi-plus-circle me-1"></i>Créer cet émetteur
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

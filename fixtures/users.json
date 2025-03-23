@@ -1,0 +1,222 @@
+[
+  {
+    "model": "core.user",
+    "pk": 2,
+    "fields": {
+      "email": "marie.dupont@example.com",
+      "display_name": "Marie Dupont",
+      "bio": "Formatrice en développement web et experte en accessibilité",
+      "website": "https://mariedupont.fr",
+      "avatar_url": "",
+      "language": "fr",
+      "email_verified": true,
+      "email_notifications": true,
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "date_joined": "2025-03-01T10:00:00Z",
+      "last_login": "2025-03-23T09:30:00Z",
+      "password": "pbkdf2_sha256$600000$qwerty123456$qwerty123456"
+    }
+  },
+  {
+    "model": "core.user",
+    "pk": 3,
+    "fields": {
+      "email": "thomas.martin@example.com",
+      "display_name": "Thomas Martin",
+      "bio": "Développeur full-stack spécialisé en Python et React",
+      "website": "https://thomasmartin.dev",
+      "avatar_url": "",
+      "language": "fr",
+      "email_verified": true,
+      "email_notifications": true,
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "date_joined": "2025-03-02T14:30:00Z",
+      "last_login": "2025-03-22T16:45:00Z",
+      "password": "pbkdf2_sha256$600000$qwerty123456$qwerty123456"
+    }
+  },
+  {
+    "model": "core.user",
+    "pk": 4,
+    "fields": {
+      "email": "sophie.bernard@example.com",
+      "display_name": "Sophie Bernard",
+      "bio": "Consultante en cybersécurité et formatrice",
+      "website": "https://sophiebernard.net",
+      "avatar_url": "",
+      "language": "fr",
+      "email_verified": true,
+      "email_notifications": true,
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "date_joined": "2025-03-03T09:15:00Z",
+      "last_login": "2025-03-21T11:20:00Z",
+      "password": "pbkdf2_sha256$600000$qwerty123456$qwerty123456"
+    }
+  },
+  {
+    "model": "core.user",
+    "pk": 5,
+    "fields": {
+      "email": "lucas.petit@example.com",
+      "display_name": "Lucas Petit",
+      "bio": "Designer UX/UI et spécialiste en accessibilité numérique",
+      "website": "https://lucaspetit.design",
+      "avatar_url": "",
+      "language": "fr",
+      "email_verified": true,
+      "email_notifications": true,
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "date_joined": "2025-03-04T16:00:00Z",
+      "last_login": "2025-03-20T14:10:00Z",
+      "password": "pbkdf2_sha256$600000$qwerty123456$qwerty123456"
+    }
+  },
+  {
+    "model": "core.user",
+    "pk": 6,
+    "fields": {
+      "email": "emma.leroy@example.com",
+      "display_name": "Emma Leroy",
+      "bio": "Développeuse backend et experte en bases de données",
+      "website": "https://emmaleroy.tech",
+      "avatar_url": "",
+      "language": "fr",
+      "email_verified": true,
+      "email_notifications": true,
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "date_joined": "2025-03-05T11:30:00Z",
+      "last_login": "2025-03-19T10:05:00Z",
+      "password": "pbkdf2_sha256$600000$qwerty123456$qwerty123456"
+    }
+  },
+  {
+    "model": "core.user",
+    "pk": 7,
+    "fields": {
+      "email": "hugo.moreau@example.com",
+      "display_name": "Hugo Moreau",
+      "bio": "Ingénieur DevOps et formateur en CI/CD",
+      "website": "https://hugomoreau.io",
+      "avatar_url": "",
+      "language": "fr",
+      "email_verified": true,
+      "email_notifications": true,
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "date_joined": "2025-03-06T13:45:00Z",
+      "last_login": "2025-03-18T15:30:00Z",
+      "password": "pbkdf2_sha256$600000$qwerty123456$qwerty123456"
+    }
+  },
+  {
+    "model": "core.user",
+    "pk": 8,
+    "fields": {
+      "email": "camille.dubois@example.com",
+      "display_name": "Camille Dubois",
+      "bio": "Spécialiste en intelligence artificielle et machine learning",
+      "website": "https://camilledubois.ai",
+      "avatar_url": "",
+      "language": "fr",
+      "email_verified": true,
+      "email_notifications": true,
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "date_joined": "2025-03-07T10:20:00Z",
+      "last_login": "2025-03-17T09:45:00Z",
+      "password": "pbkdf2_sha256$600000$qwerty123456$qwerty123456"
+    }
+  },
+  {
+    "model": "core.user",
+    "pk": 9,
+    "fields": {
+      "email": "antoine.robert@example.com",
+      "display_name": "Antoine Robert",
+      "bio": "Développeur mobile et expert en accessibilité",
+      "website": "https://antoinerobert.dev",
+      "avatar_url": "",
+      "language": "fr",
+      "email_verified": true,
+      "email_notifications": true,
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "date_joined": "2025-03-08T14:10:00Z",
+      "last_login": "2025-03-16T16:20:00Z",
+      "password": "pbkdf2_sha256$600000$qwerty123456$qwerty123456"
+    }
+  },
+  {
+    "model": "core.user",
+    "pk": 10,
+    "fields": {
+      "email": "julie.blanc@example.com",
+      "display_name": "Julie Blanc",
+      "bio": "Architecte logiciel et formatrice en clean code",
+      "website": "https://julieblanc.tech",
+      "avatar_url": "",
+      "language": "fr",
+      "email_verified": true,
+      "email_notifications": true,
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "date_joined": "2025-03-09T09:00:00Z",
+      "last_login": "2025-03-15T10:30:00Z",
+      "password": "pbkdf2_sha256$600000$qwerty123456$qwerty123456"
+    }
+  },
+  {
+    "model": "core.user",
+    "pk": 11,
+    "fields": {
+      "email": "maxime.rousseau@example.com",
+      "display_name": "Maxime Rousseau",
+      "bio": "Expert en sécurité informatique et formateur",
+      "website": "https://maximerousseau.security",
+      "avatar_url": "",
+      "language": "fr",
+      "email_verified": true,
+      "email_notifications": true,
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "date_joined": "2025-03-10T15:45:00Z",
+      "last_login": "2025-03-14T13:15:00Z",
+      "password": "pbkdf2_sha256$600000$qwerty123456$qwerty123456"
+    }
+  },
+  {
+    "model": "core.user",
+    "pk": 12,
+    "fields": {
+      "email": "admin@admin.com",
+      "display_name": "Administrateur",
+      "bio": "Administrateur de la plateforme OpenBadge",
+      "website": "https://openbadge.fr",
+      "avatar_url": "",
+      "language": "fr",
+      "email_verified": true,
+      "email_notifications": true,
+      "is_active": true,
+      "is_staff": true,
+      "is_superuser": true,
+      "date_joined": "2025-03-01T08:00:00Z",
+      "last_login": "2025-03-23T19:00:00Z",
+      "password": "pbkdf2_sha256$600000$qwerty123456$qwerty123456"
+    }
+  }
+]

@@ -1,0 +1,12 @@
+{% load i18n %}{% autoescape off %}
+{% blocktrans with user=user.get_display_name %}Bonjour {{ user }},{% endblocktrans %}
+
+{% trans "Merci de vous être inscrit sur OpenBadge ! Pour vérifier votre adresse email, veuillez cliquer sur le lien ci-dessous :" %}
+
+{{ verification_url }}
+
+{% trans "Si vous n'avez pas créé de compte sur OpenBadge, vous pouvez ignorer cet email." %}
+
+{% trans "Cordialement," %}
+{% trans "L'équipe OpenBadge" %}
+{% endautoescape %}

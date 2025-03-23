@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "openbadge"
+version = "0.1.0"
+description = "Plateforme de gestion OpenBadge V2/V3"
+authors = ["Jonas"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^5.1.7"
+djangorestframework = "^3.15.2"
+django-htmx = "^1.23.0"
+django-allauth = "^65.5.0"
+django-solo = "^2.4.0"
+django-tenant-schemas = "^1.12.0"
+cryptography = "^44.0.2"
+django-tailwind = {extras = ["reload"], version = "^3.8.0"}
+coreapi = "^2.3.3"
+pyyaml = "^6.0.2"
+setuptools = "^77.0.3"
+pillow = "^11.1.0"
+coverage = "^7.7.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+pytest-django = "^4.10.0"
+black = "^25.1.0"
+isort = "^6.0.1"
+flake8 = "^7.1.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

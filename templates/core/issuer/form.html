@@ -1,0 +1,41 @@
+<!-- Modal header -->
+<div class="modal-header">
+    <h5 class="modal-title">{{ title }}</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<!-- Modal body -->
+<div class="modal-body">
+    <form hx-post="{{ request.path }}"
+          hx-encoding="multipart/form-data"
+          class="needs-validation"
+          novalidate>
+        {% csrf_token %}
+        
+        {% for field in form %}
+        <div class="mb-3">
+            <label for="{{ field.id_for_label }}" class="form-label">
+                {{ field.label }}
+            </label>
+            {{ field }}
+            {% if field.help_text %}
+            <div class="form-text">{{ field.help_text }}</div>
+            {% endif %}
+            {% if field.errors %}
+            <div class="invalid-feedback">
+                {{ field.errors|join:", " }}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <div class="d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Annuler
+            </button>
+            <button type="submit" class="btn btn-primary">
+                Enregistrer
+            </button>
+        </div>
+    </form>
+</div>

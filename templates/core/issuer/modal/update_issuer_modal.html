@@ -1,0 +1,202 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <!-- Modal header -->
+        <div class="modal-header">
+            <h5 class="modal-title">Modifier l'émetteur {{ issuer.name }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <form id="issuerUpdateForm" hx-post="{% url 'core:issuer-update' issuer.id %}"
+                hx-encoding="multipart/form-data"
+                hx-swap="none"
+                hx-indicator=".htmx-indicator"
+                hx-trigger="submit">
+                {% csrf_token %}
+                
+                <!-- Champs de base -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="{{ form.name.id_for_label }}" class="form-label fw-bold">
+                                {{ form.name.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.name }}
+                            <div class="form-text">
+                                <i class="fa-solid fa-building text-primary me-1"></i>
+                                Nom de votre organisation ou institution
+                            </div>
+                            {% if form.name.errors %}
+                            <div class="invalid-feedback d-block">{{ form.name.errors|join:", " }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="{{ form.email.id_for_label }}" class="form-label fw-bold">
+                                {{ form.email.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.email }}
+                            <div class="form-text">
+                                <i class="fa-solid fa-envelope text-primary me-1"></i>
+                                Email de contact public
+                            </div>
+                            {% if form.email.errors %}
+                            <div class="invalid-feedback d-block">{{ form.email.errors|join:", " }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="{{ form.url.id_for_label }}" class="form-label fw-bold">
+                                {{ form.url.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.url }}
+                            <div class="form-text">
+                                <i class="fa-solid fa-globe text-primary me-1"></i>
+                                Site web officiel de l'émetteur
+                            </div>
+                            {% if form.url.errors %}
+                            <div class="invalid-feedback d-block">{{ form.url.errors|join:", " }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="{{ form.image.id_for_label }}" class="form-label fw-bold">
+                                {{ form.image.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.image }}
+                            <div class="form-text">
+                                <i class="fa-solid fa-image text-primary me-1"></i>
+                                URL de l'image ou logo (format carré recommandé)
+                            </div>
+                            {% if form.image.errors %}
+                            <div class="invalid-feedback d-block">{{ form.image.errors|join:", " }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="{{ form.description.id_for_label }}" class="form-label fw-bold">
+                        {{ form.description.label }}
+                    </label>
+                    {{ form.description }}
+                    <div class="form-text">
+                        <i class="fa-solid fa-align-left text-primary me-1"></i>
+                        Description de l'émetteur et de sa mission
+                    </div>
+                    {% if form.description.errors %}
+                    <div class="invalid-feedback d-block">{{ form.description.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+                
+                <!-- Champs avancés -->
+                <div class="d-grid mb-3">
+                    <button class="btn btn-outline-secondary btn-sm" type="button" 
+                            data-bs-toggle="collapse" data-bs-target="#advancedFields" 
+                            aria-expanded="false" aria-controls="advancedFields">
+                        <i class="fa-solid fa-gear me-1"></i> Paramètres avancés
+                    </button>
+                </div>
+                
+                <div class="collapse" id="advancedFields">
+                    <div class="card card-body bg-light mb-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.privacy_policy.id_for_label }}" class="form-label fw-bold">
+                                        {{ form.privacy_policy.label }}
+                                    </label>
+                                    {{ form.privacy_policy }}
+                                    <div class="form-text">
+                                        <i class="fa-solid fa-shield-halved text-primary me-1"></i>
+                                        URL de votre politique de confidentialité
+                                    </div>
+                                    {% if form.privacy_policy.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.privacy_policy.errors|join:", " }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.key_type.id_for_label }}" class="form-label fw-bold">
+                                        {{ form.key_type.label }}
+                                    </label>
+                                    {{ form.key_type }}
+                                    <div class="form-text">
+                                        <i class="fa-solid fa-key text-primary me-1"></i>
+                                        Type de clé pour la signature des badges
+                                    </div>
+                                    {% if form.key_type.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.key_type.errors|join:", " }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.public_key.id_for_label }}" class="form-label fw-bold">
+                                {{ form.public_key.label }}
+                            </label>
+                            {{ form.public_key }}
+                            <div class="form-text">
+                                <i class="fa-solid fa-lock text-primary me-1"></i>
+                                Clé publique pour la vérification des badges
+                            </div>
+                            {% if form.public_key.errors %}
+                            <div class="invalid-feedback d-block">{{ form.public_key.errors|join:", " }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.verification.id_for_label }}" class="form-label fw-bold">
+                                {{ form.verification.label }}
+                            </label>
+                            {{ form.verification }}
+                            <div class="form-text">
+                                <i class="fa-solid fa-check-double text-primary me-1"></i>
+                                Méthodes de vérification des badges (format JSON)
+                            </div>
+                            {% if form.verification.errors %}
+                            <div class="invalid-feedback d-block">{{ form.verification.errors|join:", " }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.revocation_list.id_for_label }}" class="form-label fw-bold">
+                                {{ form.revocation_list.label }}
+                            </label>
+                            {{ form.revocation_list }}
+                            <div class="form-text">
+                                <i class="fa-solid fa-ban text-primary me-1"></i>
+                                URL de la liste de révocation des badges
+                            </div>
+                            {% if form.revocation_list.errors %}
+                            <div class="invalid-feedback d-block">{{ form.revocation_list.errors|join:", " }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-xmark me-1"></i>Annuler
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="spinner-border spinner-border-sm me-2 d-none htmx-indicator" role="status" aria-hidden="true"></span>
+                        <i class="fa-solid fa-save me-1"></i>Enregistrer les modifications
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

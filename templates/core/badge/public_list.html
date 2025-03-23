@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title|default:"Catalogue de badges" }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="h2">{{ title|default:"Catalogue de badges" }}</h1>
+            <p class="text-muted">{{ description|default:"Découvrez les badges proposés par nos émetteurs partenaires." }}</p>
+        </div>
+        {% if not is_public %}
+        <div class="col-md-4 text-end">
+            <a href="{% url 'core:badge-create-modal' %}" class="btn btn-primary"
+               hx-get="{% url 'core:badge-create-modal' %}" 
+               hx-target="#badgeModal .modal-content"
+               data-bs-toggle="modal" 
+               data-bs-target="#badgeModal">
+                <i class="fas fa-plus-circle me-2"></i>Nouveau badge
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    {% for issuer_data in issuers_badges %}
+    <div class="card mb-5 shadow-sm">
+        <div class="card-header bg-light">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2 class="h4 mb-0">{{ issuer_data.issuer.name }}</h2>
+                </div>
+                <div class="col-md-4 text-end">
+                    <span class="badge bg-{{ issuer_data.issuer.version|default:'v2'|slugify }}-subtle text-{{ issuer_data.issuer.version|default:'v2'|slugify }}">
+                        {{ issuer_data.issuer.get_version_display|default:'v2' }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <p>{{ issuer_data.issuer.description }}</p>
+                    <p class="small text-muted">
+                        <i class="fas fa-globe me-2"></i><a href="{{ issuer_data.issuer.url }}" target="_blank">{{ issuer_data.issuer.url }}</a>
+                        <span class="mx-2">|</span>
+                        <i class="fas fa-envelope me-2"></i><a href="mailto:{{ issuer_data.issuer.email }}">{{ issuer_data.issuer.email }}</a>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="row">
+                {% for badge in issuer_data.badges %}
+                    {% include 'core/badge/partials/badge_card.html' with badge=badge user_is_issuer_admin=user_is_issuer_admin is_public=is_public %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i>Aucun badge n'est disponible pour le moment.
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% if not is_public %}
+<!-- Modal pour créer/éditer un badge -->
+<div class="modal fade" id="badgeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Le contenu sera chargé dynamiquement via HTMX -->
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Les modals d'endorsement sont maintenant définis directement dans la boucle des badges -->
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Rafraîchir la liste des badges après une action réussie
+        document.body.addEventListener('htmx:beforeSwap', function(evt) {
+            // Gérer le code 286 (succès avec rafraîchissement)
+            if (evt.detail.xhr.status === 286) {
+                evt.detail.shouldSwap = false; // Empêcher le swap par défaut
+                
+                // Fermer les modals
+                const badgeModal = bootstrap.Modal.getInstance(document.getElementById('badgeModal'));
+                if (badgeModal) {
+                    badgeModal.hide();
+                }
+                
+                const endorsementModal = bootstrap.Modal.getInstance(document.getElementById('endorsementModal'));
+                if (endorsementModal) {
+                    endorsementModal.hide();
+                }
+                
+                // Rafraîchir la page après un court délai
+                setTimeout(function() {
+                    window.location.reload();
+                }, 300);
+            }
+        });
+        
+        // Nettoyer les modals quand ils sont fermés
+        if (document.getElementById('badgeModal')) {
+            document.getElementById('badgeModal').addEventListener('hidden.bs.modal', function() {
+                this.querySelector('.modal-content').innerHTML = '';
+            });
+        }
+        
+        // Gérer l'événement endorsementCreated
+        document.body.addEventListener('endorsementCreated', function() {
+            // Fermer tous les modals d'endorsement ouverts
+            document.querySelectorAll('.modal.show').forEach(function(modal) {
+                if (modal.id.startsWith('endorsementModal-')) {
+                    const modalInstance = bootstrap.Modal.getInstance(modal);
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    }
+                }
+            });
+            
+            // Rafraîchir la page
+            window.location.reload();
+        });
+    });
+</script>
+{% endblock %}

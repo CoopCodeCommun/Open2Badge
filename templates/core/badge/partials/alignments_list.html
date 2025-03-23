@@ -1,0 +1,34 @@
+{% if alignments %}
+    <div class="list-group">
+        {% for alignment in alignments %}
+        <div class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h6 class="mb-1">{{ alignment.target_name }}</h6>
+                <button class="btn btn-sm btn-outline-danger"
+                        hx-delete="{% url 'core:badge-delete-alignment' badge.id alignment.id %}"
+                        hx-target="#alignments-container"
+                        hx-confirm="Êtes-vous sûr de vouloir supprimer cet alignement ?">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+            {% if alignment.target_framework %}
+            <p class="mb-1 small">Framework: {{ alignment.target_framework }}</p>
+            {% endif %}
+            {% if alignment.target_code %}
+            <p class="mb-1 small">Code: {{ alignment.target_code }}</p>
+            {% endif %}
+            {% if alignment.target_description %}
+            <p class="mb-1 small text-muted">{{ alignment.target_description }}</p>
+            {% endif %}
+            <a href="{{ alignment.target_url }}" target="_blank" class="small">
+                <i class="fas fa-external-link-alt me-1"></i>Voir le référentiel
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-light text-center">
+        <p>Aucun alignement avec des référentiels de compétences.</p>
+        <small class="text-muted">Les alignements permettent de relier ce badge à des frameworks de compétences existants (ESCO, RNCP, etc.)</small>
+    </div>
+{% endif %}

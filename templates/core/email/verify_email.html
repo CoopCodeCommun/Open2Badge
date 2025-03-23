@@ -1,0 +1,58 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.5;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0d6efd;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>{% trans "Vérification de votre adresse email" %}</h1>
+    
+    <p>{% blocktrans with user=user.get_display_name %}Bonjour {{ user }},{% endblocktrans %}</p>
+    
+    <p>{% trans "Merci de vous être inscrit sur OpenBadge ! Pour vérifier votre adresse email, veuillez cliquer sur le bouton ci-dessous :" %}</p>
+    
+    <p style="text-align: center;">
+        <a href="{{ verification_url }}" class="button">
+            {% trans "Vérifier mon email" %}
+        </a>
+    </p>
+    
+    <p>{% trans "Si le bouton ne fonctionne pas, vous pouvez copier-coller ce lien dans votre navigateur :" %}</p>
+    <p><small>{{ verification_url }}</small></p>
+    
+    <p>{% trans "Si vous n'avez pas créé de compte sur OpenBadge, vous pouvez ignorer cet email." %}</p>
+    
+    <div class="footer">
+        <p>
+            {% trans "Cordialement," %}<br>
+            {% trans "L'équipe OpenBadge" %}
+        </p>
+    </div>
+</body>
+</html>

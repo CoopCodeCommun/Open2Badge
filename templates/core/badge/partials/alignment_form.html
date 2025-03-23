@@ -1,0 +1,94 @@
+{% load static %}
+
+<div class="modal-header">
+    <h5 class="modal-title">Ajouter un alignement</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+</div>
+
+<div class="modal-body">
+    <form id="alignmentForm" 
+          hx-post="{% url 'core:badge-add-alignment' badge.id %}"
+          hx-target="#alignments-container"
+          hx-swap="innerHTML">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+            {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="form-outline mb-3">
+            {{ form.target_name }}
+            <label class="form-label" for="{{ form.target_name.id_for_label }}">Nom du référentiel*</label>
+            {% if form.target_name.errors %}
+            <div class="invalid-feedback d-block">{{ form.target_name.errors.0 }}</div>
+            {% endif %}
+            <div class="form-helper">Ex: ESCO, RNCP, Digcomp, etc.</div>
+        </div>
+        
+        <div class="form-outline mb-3">
+            {{ form.target_url }}
+            <label class="form-label" for="{{ form.target_url.id_for_label }}">URL du référentiel*</label>
+            {% if form.target_url.errors %}
+            <div class="invalid-feedback d-block">{{ form.target_url.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-outline mb-3">
+            {{ form.target_description }}
+            <label class="form-label" for="{{ form.target_description.id_for_label }}">Description</label>
+            {% if form.target_description.errors %}
+            <div class="invalid-feedback d-block">{{ form.target_description.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="form-outline mb-3">
+                    {{ form.target_framework }}
+                    <label class="form-label" for="{{ form.target_framework.id_for_label }}">Framework</label>
+                    {% if form.target_framework.errors %}
+                    <div class="invalid-feedback d-block">{{ form.target_framework.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-outline mb-3">
+                    {{ form.target_code }}
+                    <label class="form-label" for="{{ form.target_code.id_for_label }}">Code</label>
+                    {% if form.target_code.errors %}
+                    <div class="invalid-feedback d-block">{{ form.target_code.errors.0 }}</div>
+                    {% endif %}
+                    <div class="form-helper">Identifiant de la compétence dans le référentiel</div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+    <button type="submit" class="btn btn-primary" form="alignmentForm">Ajouter</button>
+</div>
+
+<script>
+    // Initialisation des composants Material Design Bootstrap
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.form-outline').forEach((formOutline) => {
+            new mdb.Input(formOutline).init();
+        });
+    });
+    
+    // Fermer le modal après une soumission réussie
+    document.getElementById('alignmentForm').addEventListener('htmx:afterRequest', function(evt) {
+        if (evt.detail.successful) {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('alignmentModal'));
+            if (modal) {
+                modal.hide();
+            }
+        }
+    });
+</script>

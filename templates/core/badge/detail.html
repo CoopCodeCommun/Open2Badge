@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ badge.name }} - Détails du badge{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'core:badge-list' %}">Badges</a></li>
+                    <li class="breadcrumb-item active">{{ badge.name }}</li>
+                </ol>
+            </nav>
+            <h1 class="h2">{{ badge.name }}</h1>
+            <span class="badge bg-{{ badge.version|default:'v2'|slugify }}-subtle text-{{ badge.version|default:'v2'|slugify }} me-2">
+                {{ badge.get_version_display|default:'v2' }}
+            </span>
+            {% if badge.category %}
+            <span class="badge bg-info me-2">{{ badge.category }}</span>
+            {% endif %}
+            {% if badge.level %}
+            <span class="badge bg-warning">Niveau: {{ badge.level }}</span>
+            {% endif %}
+        </div>
+        <div class="col-md-4 text-end">
+            <button type="button" class="btn btn-primary" 
+                    hx-get="{% url 'core:badge-edit-modal' badge.id %}" 
+                    hx-target="#badgeModal .modal-content"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#badgeModal">
+                <i class="fas fa-edit me-2"></i>Modifier
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Informations du badge -->
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <img src="{{ badge.image }}" alt="{{ badge.name }}" class="img-fluid mb-3" style="max-height: 150px;">
+                            <p class="mb-1"><strong>Émetteur:</strong></p>
+                            <p class="mb-0">{{ badge.issuer.name }}</p>
+                        </div>
+                        <div class="col-md-8">
+                            <h5 class="card-title">Description</h5>
+                            <p>{{ badge.description }}</p>
+                            
+                            {% if badge.skills %}
+                            <h5 class="card-title mt-4">Compétences validées</h5>
+                            <div class="mb-3">
+                                {% for skill in badge.skills.split(',') %}
+                                <span class="badge bg-light text-dark me-2 mb-2">{{ skill.strip }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            
+                            <div class="mt-4">
+                                <a href="{{ badge.criteria_url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-external-link-alt me-2"></i>Voir les critères d'obtention
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <small class="text-muted">Créé le {{ badge.created_at|date:"d/m/Y" }} - Dernière mise à jour le {{ badge.updated_at|date:"d/m/Y" }}</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Alignements avec des frameworks de compétences -->
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Alignements</h5>
+                    <button type="button" class="btn btn-sm btn-primary" 
+                            hx-get="{% url 'core:badge-add-alignment-modal' badge.id %}" 
+                            hx-target="#alignmentModal .modal-content"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#alignmentModal">
+                        <i class="fas fa-plus-circle"></i>
+                    </button>
+                </div>
+                <div class="card-body" id="alignments-container">
+                    {% include 'core/badge/partials/alignments_list.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Endorsements du badge -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Endorsements</h5>
+                    <button type="button" class="btn btn-sm btn-primary" 
+                            hx-get="{% url 'core:endorsement_modal' %}?badge_class_id={{ badge.id }}" 
+                            hx-target="#endorsementModal .modal-content"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#endorsementModal">
+                        <i class="fas fa-plus-circle"></i> Endorser ce badge
+                    </button>
+                </div>
+                <div class="card-body" id="endorsements-container">
+                    <div hx-get="{% url 'core:get_endorsements' %}?badge_class_id={{ badge.id }}" 
+                         hx-trigger="load, endorsementCreated from:body"
+                         hx-swap="innerHTML">
+                        <div class="text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Chargement...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour éditer un badge -->
+<div class="modal fade" id="badgeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Le contenu sera chargé dynamiquement via HTMX -->
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour ajouter un alignement -->
+<div class="modal fade" id="alignmentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Le contenu sera chargé dynamiquement via HTMX -->
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour les endorsements -->
+<div class="modal fade" id="endorsementModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Le contenu sera chargé dynamiquement via HTMX -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Nettoyer les modaux quand ils sont fermés
+        document.querySelectorAll('.modal').forEach(function(modal) {
+            modal.addEventListener('hidden.bs.modal', function() {
+                this.querySelector('.modal-content').innerHTML = '';
+            });
+        });
+    });
+</script>
+{% endblock %}

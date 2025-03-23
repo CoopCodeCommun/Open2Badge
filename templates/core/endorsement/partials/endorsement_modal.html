@@ -1,0 +1,29 @@
+{% load i18n %}
+
+<div class="modal-header">
+  <h5 class="modal-title" id="endorsementModalLabel">
+    {% if badge_class %}
+      {% trans "Endorser le badge" %} "{{ badge_class.name }}"
+    {% elif issuer %}
+      {% trans "Endorser l'émetteur" %} "{{ issuer.name }}"
+    {% elif assertion %}
+      {% trans "Endorser l'assertion de badge" %} "{{ assertion.badge_class.name }}"
+    {% else %}
+      {% trans "Créer un endorsement" %}
+    {% endif %}
+  </h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+  <p class="mb-3">
+    {% if badge_class %}
+      {% trans "Votre endorsement ajoutera de la crédibilité à ce badge et aidera d'autres personnes à reconnaître sa valeur." %}
+    {% elif issuer %}
+      {% trans "Votre endorsement ajoutera de la crédibilité à cet émetteur et aidera d'autres personnes à reconnaître son autorité." %}
+    {% elif assertion %}
+      {% trans "Votre endorsement ajoutera de la crédibilité à cette assertion de badge et confirmera sa légitimité." %}
+    {% endif %}
+  </p>
+  
+  {% include "core/endorsement/partials/endorsement_form.html" %}
+</div>

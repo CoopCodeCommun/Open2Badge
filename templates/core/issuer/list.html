@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Émetteurs de badges</h1>
+        <button class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#issuerModal">
+            Nouvel émetteur
+        </button>
+    </div>
+
+    <div id="issuerList" class="row row-cols-1 row-cols-md-3 g-4" hx-get="{% url 'core:issuer-list' %}" hx-trigger="refresh from:body">
+        {% include "core/issuer/partials/issuer_list.html" %}
+    </div>
+</div>
+
+<!-- Modal pour les formulaires -->
+<div id="issuerModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal header -->
+            <div class="modal-header">
+                <h5 class="modal-title">Créer un nouvel émetteur</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="issuerForm" action="{% url 'core:issuer-create' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <!-- Le formulaire sera chargé dynamiquement -->
+                    <div id="issuerFormContent"></div>
+
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Annuler
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <span class="spinner-border spinner-border-sm me-2 d-none" role="status" aria-hidden="true"></span>
+                            Enregistrer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Charger le formulaire quand le modal est ouvert
+    document.getElementById('issuerModal').addEventListener('show.bs.modal', function() {
+        // Charger le formulaire via fetch
+        fetch('{% url "core:issuer-create-modal" %}')
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const formFields = doc.querySelectorAll('.mb-3');
+                
+                // Vider le contenu précédent
+                document.getElementById('issuerFormContent').innerHTML = '';
+                
+                // Ajouter les champs du formulaire
+                formFields.forEach(field => {
+                    document.getElementById('issuerFormContent').appendChild(field);
+                });
+            })
+            .catch(error => {
+                console.error('Erreur lors du chargement du formulaire:', error);
+            });
+    });
+    
+    // Gérer la soumission du formulaire
+    document.getElementById('issuerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Afficher le spinner
+        const spinner = this.querySelector('.spinner-border');
+        spinner.classList.remove('d-none');
+        
+        // Soumettre le formulaire via fetch
+        fetch(this.action, {
+            method: 'POST',
+            body: new FormData(this),
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                // Rafraîchir la liste des émetteurs
+                htmx.trigger('#issuerList', 'refresh');
+                
+                // Fermer le modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('issuerModal'));
+                modal.hide();
+            } else {
+                // Gérer les erreurs
+                return response.text().then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const formFields = doc.querySelectorAll('.mb-3');
+                    
+                    // Remplacer les champs du formulaire par ceux avec les erreurs
+                    document.getElementById('issuerFormContent').innerHTML = '';
+                    formFields.forEach(field => {
+                        document.getElementById('issuerFormContent').appendChild(field);
+                    });
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de la soumission du formulaire:', error);
+        })
+        .finally(() => {
+            // Masquer le spinner
+            spinner.classList.add('d-none');
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% for issuer in issuers %}
+<div class="col">
+    <div class="card h-100">
+        {% if issuer.image %}
+        <img src="{{ issuer.image.url }}" class="card-img-top" alt="{{ issuer.name }}">
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title">{{ issuer.name }}</h5>
+            <p class="card-text">{{ issuer.description|truncatewords:30 }}</p>
+            <div class="d-flex gap-2">
+                <a href="{{ issuer.url }}" class="btn btn-sm btn-outline-primary" target="_blank">
+                    <i class="bi bi-link-45deg"></i> Site web
+                </a>
+                <a href="mailto:{{ issuer.email }}" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-envelope"></i> Contact
+                </a>
+            </div>
+        </div>
+        <div class="card-footer bg-transparent border-0">
+            <div class="btn-group w-100">
+                <button class="btn btn-outline-primary"
+                        hx-get="{% url 'core:issuer-update' issuer.pk %}"
+                        hx-target="#dialog">
+                    <i class="bi bi-pencil"></i> Modifier
+                </button>
+                <button class="btn btn-outline-danger"
+                        hx-get="{% url 'core:issuer-delete' issuer.pk %}"
+                        hx-target="#dialog">
+                    <i class="bi bi-trash"></i> Supprimer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% empty %}
+<div class="col-12">
+    <div class="alert alert-info" role="alert">
+        <i class="bi bi-info-circle me-2"></i>
+        Aucun émetteur n'a encore été créé.
+    </div>
+</div>
+{% endfor %}

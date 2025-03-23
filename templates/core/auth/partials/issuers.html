@@ -1,0 +1,63 @@
+{% load i18n %}
+
+<!-- Émetteurs rejoints -->
+<div id="joined-issuers" class="card mb-4">
+    <div class="card-header">
+        <h4 class="card-title mb-0">{% trans "Mes émetteurs" %}</h4>
+    </div>
+    <div class="card-body">
+        {% if joined_issuers %}
+            <ul class="list-group">
+                {% for issuer in joined_issuers %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ issuer.name }}</strong>
+                            <div class="small text-muted">{{ issuer.email }}</div>
+                        </div>
+                        <form hx-post="{% url 'core:leave-issuer' issuer.id %}" hx-target="#issuers-container" hx-swap="innerHTML">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-x-circle"></i> {% trans "Quitter" %}
+                            </button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="alert alert-info">
+                {% trans "Vous n'avez rejoint aucun émetteur pour le moment." %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Rejoindre un émetteur -->
+<div id="available-issuers" class="card">
+    <div class="card-header">
+        <h4 class="card-title mb-0">{% trans "Rejoindre un émetteur" %}</h4>
+    </div>
+    <div class="card-body">
+        {% if available_issuers %}
+            <ul class="list-group">
+                {% for issuer in available_issuers %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ issuer.name }}</strong>
+                            <div class="small text-muted">{{ issuer.email }}</div>
+                        </div>
+                        <form hx-post="{% url 'core:join-issuer' issuer.id %}" hx-target="#issuers-container" hx-swap="innerHTML">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-primary">
+                                <i class="bi bi-plus-circle"></i> {% trans "Rejoindre" %}
+                            </button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="alert alert-info">
+                {% trans "Aucun émetteur disponible à rejoindre." %}
+            </div>
+        {% endif %}
+    </div>
+</div>

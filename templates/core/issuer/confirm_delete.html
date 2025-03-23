@@ -1,0 +1,24 @@
+<!-- Modal header -->
+<div class="modal-header">
+    <h5 class="modal-title">{{ title }}</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<!-- Modal body -->
+<div class="modal-body">
+    <p>Êtes-vous sûr de vouloir supprimer l'émetteur "{{ issuer.name }}" ?</p>
+    <p class="text-danger">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        Cette action est irréversible.
+    </p>
+
+    <form hx-post="{{ request.path }}" class="d-flex justify-content-end gap-2">
+        {% csrf_token %}
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Annuler
+        </button>
+        <button type="submit" class="btn btn-danger">
+            Supprimer
+        </button>
+    </form>
+</div>
